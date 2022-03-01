@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <!-- Tasks Scheduling: Views and Actions -->
+    <record id="view_task_tree" model="ir.ui.view">
+        <field name="name">task</field>
+        <field name="model">task</field>
+        <field name="arch" type="xml">
+            <tree string="Tasks">
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_task_form" model="ir.ui.view">
+        <field name="name">task.form</field>
+        <field name="model">task</field>
+        <field name="arch" type="xml">
+            <form string="Schedule Tasks">
+		        <header>
+                    <button name='action_progress' string="Start" type="object" groups="base.group_user"
+                                attrs="{'invisible' : [('status', 'in', ('in_progess', 'complete', 'expired'))]}" />
+                    <button name='action_complete' string="Done" type="object" groups="base.group_user"
+                                attrs="{'invisible' : [('status', 'in', ('draft', 'complete', 'expired'))]}" />
+		            
+                    <field name="status" widget="statusbar" statusbar_visible="draft,in_progess,complete,expired"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="description"/>
+                        </group>
+                        <group>
+                            <field name="user_id" widget="many2one_avatar_user"/>
+			                <field name="duration" groups="base.group_erp_manager" attrs="{'readonly' : [('status', 'in', ('in_progess', 'complete', 'expired'))]}"/>
+			                <field name="start" string="Start Date" attrs="{'readonly' : [('status', 'in', ('in_progess', 'complete', 'expired'))]}"/>
+			                <field name="stop" string="End Date" groups="base.group_erp_manager" readonly='1' /> <!-- attrs="{'readonly' : [('status', 'in', ('''in_progess', 'complete', 'expired'))]}"/> -->
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_task" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">task</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_task_tree"/>
+    </record>
+      
+    <record id="action_task" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">task</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_task_form"/>
+        <!-- <field name="search_view_id" ref="view_task_search"/> -->
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            No tasks found. Let's schedule one!
+          </p>
+        </field>
+    </record>
+
+    <record id="action_view_task_tree" model="ir.actions.act_window.view">
+        <field name="act_window_id" ref="action_task"/>
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_task_tree"/>
+    </record>
+
+    <record id="action_view_task_form" model="ir.actions.act_window.view">
+        <field name="act_window_id" ref="action_task"/>
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_task_form"/>
+    </record>
+
+    <!-- Menus -->
+    <menuitem
+        id="menu_task"
+        name="Task Scheduling"
+        sequence="10"
+        action="action_task"
+        web_icon="task_scheduling,static/description/icon.png"
+        groups="base.group_user"/>
+
+    <menuitem
+        id="task_menu_tasks"
+        parent="task_scheduling.menu_task"
+        name="Tasks"
+        sequence="20"
+        action="task_scheduling.action_task"
+        groups="base.group_user"/>
+
+</odoo>
