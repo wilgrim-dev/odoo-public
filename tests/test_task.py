@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import date, timedelta
 import datetime
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
@@ -32,7 +32,7 @@ class EstateTestCase(TransactionCase):
         """Test that everything behaves like it should when scheduling a task."""
         self.properties.action_progress()
         self.assertRecordValues(self.properties, [
-           {'status': 'in_progess',},
+           {'status': 'in_progess', 'start': date.today()},
         ])
     
     def test_action_complete(self):
