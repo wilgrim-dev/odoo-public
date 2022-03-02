@@ -12,7 +12,7 @@ This modules adds task scheduling in Odoo 15 Community Edition.
     """,
     'category': 'Productivity',
     'website': 'https://example.com',
-    'depends' : [],
+    'depends' : ['sms'],
     'data': [
         'security/ir.model.access.csv',
         'data/service_cron.xml', 
