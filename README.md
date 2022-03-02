@@ -28,4 +28,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ## License
-[LGPL-3](https://www.gnu.org/licenses/lgpl-3.0.en.html/)
+[LGPL-3](https://www.gnu.org/licenses/lgpl+gpl-3.0.txt)
