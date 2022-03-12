@@ -13,8 +13,14 @@ _logger = logging.getLogger(__name__)
 class Task(models.Model):
     _name = 'task'
     _description = 'Task Scheduling'
+    _inherit = [
+                'mail.thread.phone',
+                'mail.activity.mixin',
+               ]
 
     user_id = fields.Many2one('res.users', string='Assigned To', required=True, store=True)
+    phone = fields.Char(related='user_id.phone')
+    mobile = fields.Char(related='user_id.mobile')
     name = fields.Char(string='Task', required=True)
     description = fields.Text(string='Description', required=True)
     start = fields.Date()
@@ -47,3 +53,7 @@ class Task(models.Model):
 
         for record in records:
             record.write({'status': 'expired'})
+    
+    def _phone_get_number_fields(self):
+        """ Use mobile or phone fields to compute sanitized phone number """
+        return ['mobile', 'phone']
